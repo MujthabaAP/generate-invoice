@@ -4,14 +4,21 @@ include './config/helper.php';
 
 $obj = new helper();
 $invoiceData = '';
-if(!empty($_GET['invoice_id'])){
+if (!empty($_GET['invoice_id'])) {
     $invoiceData = $obj->getInvoiceDetailsById(trim($_GET['invoice_id']));
-    echo"<pre>"; print_r($invoiceData); die();
-}else{
+    if (!empty($invoiceData)) {
+        $invoiceData = $invoiceData['data'];
+    } else {
+        echo 'Sorry, invoice data is not found.';
+        die;
+    }
+//    echo"<pre>";
+//    print_r($invoiceData);
+//    die();
+} else {
     echo 'The invoice id is missing.';
     die;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +36,8 @@ if(!empty($_GET['invoice_id'])){
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
         <link rel="stylesheet" href="css/print-invoice.css">
     </head>
-     <!--onload="window.print();"-->
-    <body>
+    <!--onload="window.print();"-->
+    <body onload="window.print();">
         <div class="wrapper">
             <!-- Main content -->
             <section class="invoice">
@@ -39,7 +46,7 @@ if(!empty($_GET['invoice_id'])){
                     <div class="col-sm-12">
                         <h2 class="page-header">
                             <i class="fa fa-globe"></i> Lorem Ipsum, Inc.
-                            <small class="pull-right">Date: 2/10/2014</small>
+                            <small class="pull-right">Date: <?= $invoiceData[0]['created_at'] ?></small>
                         </h2>
 
                     </div>
@@ -53,27 +60,23 @@ if(!empty($_GET['invoice_id'])){
                             795 Folsom Ave, Suite 600<br>
                             San Francisco, CA 94107<br>
                             Phone: (804) 123-5432<br>
-                            Email: info@almasaeedstudio.com
+                            Email: info@yopmail.com
                         </address>
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-4 invoice-col">
                         To
                         <address>
-                            <strong>John Doe</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            Phone: (555) 539-1037<br>
-                            Email: john.doe@example.com
+                            <?= $invoiceData[0]['invoice_to'] ?>
                         </address>
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-4 invoice-col">
-                        <b>Invoice #007612</b><br>
+                        <b>Invoice #<?= $invoiceData[0]['invoice_no'] ?></b><br>
                         <br>
                         <b>Order ID:</b> 4F3S8J<br>
-                        <b>Payment Due:</b> 2/22/2014<br>
-                        <b>Account:</b> 968-34567
+                        <b>Payment Due:</b> 2021-05-17<br>
+                        <b>Account:</b> 968-34567-345686
                     </div>
                     <!-- /.col -->
                 </div>
@@ -85,42 +88,35 @@ if(!empty($_GET['invoice_id'])){
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Qty</th>
-                                    <th>Product</th>
-                                    <th>Serial #</th>
-                                    <th>Description</th>
-                                    <th>Subtotal</th>
+                                    <th>Sl No</th>
+                                    <th>Product name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit price</th>
+                                    <th>Tax</th>
+                                    <th>Total</th>
+                                    <th>Total with tax</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Call of Duty</td>
-                                    <td>455-981-221</td>
-                                    <td>El snort testosterone trophy driving gloves handsome</td>
-                                    <td>$64.50</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Need for Speed IV</td>
-                                    <td>247-925-726</td>
-                                    <td>Wes Anderson umami biodiesel</td>
-                                    <td>$50.00</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Monsters DVD</td>
-                                    <td>735-845-642</td>
-                                    <td>Terry Richardson helvetica tousled street art master</td>
-                                    <td>$10.70</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Grown Ups Blue Ray</td>
-                                    <td>422-568-642</td>
-                                    <td>Tousled lomo letterpress</td>
-                                    <td>$25.99</td>
-                                </tr>
+                                <?php
+                                foreach ($invoiceData as $key => $invoice) {
+                                    $lineTotal = ($invoice['quantity'] * $invoice['unit_price']);
+                                    if ($invoice['tax'] != 0) {
+                                        $subTotalWitTax = ($lineTotal) + (($lineTotal * $invoice['tax']) / 100);
+                                    } else {
+                                        $subTotalWitTax = $lineTotal;
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= $invoice['item_name'] ?></td>
+                                        <td><?= $invoice['quantity'] ?></td>
+                                        <td><?= $invoice['unit_price'] ?></td>
+                                        <td><?= $invoice['tax'] ?></td>
+                                        <td><?= '$' . ($lineTotal) ?></td>
+                                        <td><?= '$' . $subTotalWitTax ?></td>
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -144,20 +140,20 @@ if(!empty($_GET['invoice_id'])){
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th style="width:50%">Subtotal:</th>
-                                    <td>$250.30</td>
+                                    <th style="width:50%">Discount <?= ($invoiceData[0]['discount_type'] == 'PERCENTAGE') ? '(%)' : '($)' ?>:</th>
+                                    <td><?= $invoiceData[0]['discount_value'] ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Tax (9.3%)</th>
-                                    <td>$10.34</td>
+                                    <th>Subtotal with tax</th>
+                                    <td>$<?= $invoiceData[0]['sub_total_tax'] ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Shipping:</th>
-                                    <td>$5.80</td>
+                                    <th>Subtotal without tax:</th>
+                                    <td>$<?= $invoiceData[0]['sub_total_without_tax'] ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Total:</th>
-                                    <td>$265.24</td>
+                                    <th>Total amount:</th>
+                                    <td>$<?= $invoiceData[0]['net_total'] ?></td>
                                 </tr>
                             </table>
                         </div>
