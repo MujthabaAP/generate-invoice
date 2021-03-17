@@ -7,7 +7,68 @@ and open the template in the editor.
     Created on : 16 Mar, 2021, 8:36:44 PM
     Author     : mujthaba
 */
+body{
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: 400;
+}
 
+.invoice-detail{
+    text-align: right;
+}
+h1{
+    text-align: center;
+}
 .remove-a-row:hover{
     cursor: pointer;
+}
+
+input{
+    width: 100%;
+}
+
+tfoot tr>th:first-child{
+    text-align: right;
+}
+tfoot th{
+    border-top: none !important;
+}
+
+.custom-select-option{
+    display: block;
+    /* width: 100%; */
+    padding: 8px 0.75rem;
+    font-size: 1rem;
+    line-height: 9.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.custom-text-area{
+    display: block;
+    width: 60%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.line-total, .line-total-with-tax{
+    padding: 6px 0px 0px 0px !important;
+}
+.remove-a-row{
+    padding: 11px 0px 0px 0px;
+}
+.generate-btn-container{
+    text-align: center;
+    border-top: 1px solid #c4abab4a;
+    padding: 10px;
 }

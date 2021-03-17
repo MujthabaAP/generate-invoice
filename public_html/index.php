@@ -7,39 +7,88 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" >
+        <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" >-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet" href="css/generate-invoice.css" >
+
         <title>Hello, world!</title>
     </head>
     <body>
-        <h1>Hello, world!</h1>
-        <button id="addRow">Add new row</button>
-        <button id="submitForm">Submit</button>
+        <h1>CREATE INVOICE</h1>
+        <a href="print-invoice.php">test page</a>
+
         <div class="container">
-            <div class="col-md-12">
-                <table id="example" class="display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Quantity</th>
-                            <th>Unit Price (in $)</th>
-                            <th>Tax</th>
-                            <th>Line Total</th>
-                            <th>Subtotal without tax</th>
-                            <th>Subtotal with tax</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-<!--                    <tfoot>
-                        <tr>
-                            <th>Column 1</th>
-                            <th>Column 2</th>
-                            <th>Column 3</th>
-                            <th>Column 4</th>
-                            <th>Column 5</th>
-                        </tr>
-                    </tfoot>-->
-                </table>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="invoice-to-address"><strong>INVOICE TO</strong></p>
+                    <textarea class="custom-text-area" aria-label="With textarea"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <div class="invoice-detail">
+                        <label for="basic-url"><strong>INVOICE</strong></label>
+                        <address>
+                            Invoice no: <label id="invoice-number">87364578</label><br>
+                            Date : <label><?= date('Y-m-d'); ?></label>
+                        </address>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <table id="example" class="display table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Item Quantity</th>
+                                <th>Unit Price (in $)</th>
+                                <th>Tax</th>
+                                <th>Total</th>
+                                <!--<th>Subtotal without tax</th>-->
+                                <th>Total with tax</th>
+                                <th>Action</th>
+                        <!--<input type="hidden" id="" name="line-total-eeee[]" value="23">-->
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7"><button id="addRow" class="btn btn-primary">Add new row</button></td>
+                            </tr>
+                            <tr>
+                                <th colspan="5">Discount:</th>
+                                <th>
+                                    <select size="1" id="select-discount-opt" name="discount-option" class="custom-select-option">
+                                        <option value="PERCENTAGE" selected="selected">Percentage (%)</option>
+                                        <option value="AMOUNT">Amount ($)</option>
+                                    </select></th>
+                                <th><input type="text" class="form-control" id="discount-input" name="discount-value" value="0"></th>
+                            </tr>
+                            <tr>
+                                <th colspan="5">Subtotal with tax:</th>
+                                <th colspan="2"><label id="line-sub-total-with-tax">0</label></th>
+                            </tr>
+                            <tr>
+                                <th colspan="5">Subtotal without tax:</th>
+                                <th colspan="2"><label id="line-sub-total-without-tax">0</label></th>
+                            </tr>
+                            <tr>
+                                <th colspan="5">Total amount:</th>
+                                <th colspan="2"><label id="net-total">0</label></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="generate-btn-container">
+                        <button id="submitForm" class="btn btn-success">Generate Invoice</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Optional JavaScript -->
