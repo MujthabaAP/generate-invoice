@@ -1,9 +1,17 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+include './config/helper.php';
+
+
+$obj = new helper();
+$invoiceData = '';
+if(!empty($_GET['invoice_id'])){
+    $invoiceData = $obj->getInvoiceDetailsById(trim($_GET['invoice_id']));
+    echo"<pre>"; print_r($invoiceData); die();
+}else{
+    echo 'The invoice id is missing.';
+    die;
+}
+
 ?>
 
 <!DOCTYPE html>

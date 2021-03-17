@@ -7,7 +7,7 @@
 
 $(document).ready(function () {
     $('#invoice-number').text(Date.now());
-    
+
     var table = $('#example').DataTable({
         "searching": false,
         "paging": false,
@@ -66,8 +66,11 @@ $(document).ready(function () {
         var selectedDiscountOpt = $('#select-discount-opt').find('option:selected');
         var DiscountOptVal = selectedDiscountOpt.val();
         var netAmount = parseFloat($('#net-total').text());
-        var invoiceTo = $('textarea.custom-text-area').text();
+        var invoiceTo = $('.custom-text-area').val();
         var invoiceNo = $('#invoice-number').text();
+
+        console.log('invoiceTo', invoiceTo);
+        console.log('discountGiven', discountGiven);
 
         formdata.push({name: 'discount_given', value: discountGiven},
                 {name: 'selected_discount_opt', value: DiscountOptVal},
@@ -83,8 +86,16 @@ $(document).ready(function () {
             data: formdata,
             success: function (data)
             {
-//                var result = JSON.parse(data);
-                console.log(data);
+                var result = JSON.parse(data);
+                if (result.status == 'failed') {
+                    alert(result.message);
+                } else {
+                    //redirect
+                    window.location.href = "print-invoice.php?invoice_id=" + result.invoice_id;
+                    alert(result.status);
+                }
+//                console.log(data);
+//                alert(result.status);
             }
         });
     });
