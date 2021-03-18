@@ -9,7 +9,7 @@ class helper {
     public $mysqli;
 
     function __construct() {
-        $servername = "db";
+        $servername = "localhost";
         $username = "root";
         $password = "test";
         $dbname = "fingent";
