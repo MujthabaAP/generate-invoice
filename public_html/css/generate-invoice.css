@@ -18,6 +18,9 @@ body{
 h1{
     text-align: center;
 }
+.remove-a-row{
+    color: #ff0000b0;
+}
 .remove-a-row:hover{
     cursor: pointer;
 }
