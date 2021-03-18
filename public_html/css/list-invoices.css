@@ -1,0 +1,20 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 18 Mar, 2021, 11:14:35 AM
+    Author     : mujthaba
+*/
+body{
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: 400;
+}
+h1{
+    text-align: center;
+}
+.create-new-contianer{
+    text-align: right;
+    padding: 10px;
+}

@@ -11,7 +11,12 @@ body{
     font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
     font-weight: 400;
 }
-
+.create-new-contianer{
+    text-align: right;
+    padding: 10px 0px;
+    border-bottom: 1px solid #201e1e29;
+    margin-bottom: 16px;
+}
 .invoice-detail{
     text-align: right;
 }

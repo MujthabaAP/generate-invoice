@@ -9,7 +9,7 @@ class helper {
     public $mysqli;
 
     function __construct() {
-        $servername = "localhost";
+        $servername = "db";
         $username = "root";
         $password = "test";
         $dbname = "fingent";
@@ -40,7 +40,7 @@ class helper {
             $result = $stmt->fetchAll();
 
             if (!empty($result)) {
-                $response = ['status' => 'success', 'message' => 'data featched successfully.', 'data' => $result[0]];
+                $response = ['status' => 'success', 'message' => 'data fetched successfully.', 'data' => $result[0]];
             }
         }
 
@@ -63,10 +63,23 @@ class helper {
             $result = $stmt->fetchAll();
 
             if (!empty($result)) {
-                $response = ['status' => 'success', 'message' => 'data featched successfully.', 'data' => $result];
+                $response = ['status' => 'success', 'message' => 'data fetched successfully.', 'data' => $result];
             }
         }
 
+        return $response;
+    }
+
+    public function getAllInvoices() {
+        $response = ['status' => 'failed', 'message' => 'The invoice number is empty.'];
+        $sql = "SELECT * FROM `invoices` WHERE is_active=true";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll();
+        if (!empty($result)) {
+            $response = ['status' => 'success', 'message' => 'data fetched successfully.', 'data' => $result];
+        }
         return $response;
     }
 

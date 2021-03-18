@@ -20,6 +20,9 @@
         <h1>CREATE INVOICE</h1>
 
         <div class="container">
+            <div class="create-new-contianer">
+                <a href="list-invoices.php"><button class="btn btn-success">List of invoices generated</button></a>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <p class="invoice-to-address"><strong>INVOICE TO</strong></p>

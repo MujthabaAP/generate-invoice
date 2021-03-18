@@ -35,6 +35,7 @@ if (!empty($_GET['invoice_id'])) {
     <body onload="window.print();">
         <div class="create-new-contianer">
             <a href="index.php"><button id="submitForm" class="btn btn-success">Create a new invoice</button></a>
+            <a href="list-invoices.php"><button class="btn btn-success">List of invoices generated</button></a>
         </div>
 
         <div class="wrapper">
