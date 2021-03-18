@@ -11,3 +11,5 @@ Please do the following steps after cloning the repository
 4. You can acess the web page by calling URL : 'http://localhost/generate-invoice/public_html/index.php'
 
 5. You can create invoice from 'index.php' and clicking on the generate invoice button will store the invoice details to the database and print the invoice.
+
+6. To list the invoices generated URl: 'http://localhost/generate-invoice/public_html/list-invoices.php'
