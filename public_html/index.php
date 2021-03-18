@@ -7,16 +7,17 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" >-->
+        <!--dataTables CSS-->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+        <!--google font-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <!--custom external style sheet-->
         <link rel="stylesheet" href="css/generate-invoice.css" >
 
-        <title>Hello, world!</title>
+        <title>Create invoice</title>
     </head>
     <body>
         <h1>CREATE INVOICE</h1>
-        <a href="print-invoice.php">test page</a>
 
         <div class="container">
             <div class="row">
@@ -45,10 +46,8 @@
                                 <th>Unit Price (in $)</th>
                                 <th>Tax</th>
                                 <th>Total</th>
-                                <!--<th>Subtotal without tax</th>-->
                                 <th>Total with tax</th>
                                 <th>Action</th>
-                        <!--<input type="hidden" id="" name="line-total-eeee[]" value="23">-->
                             </tr>
                         </thead>
                         <tfoot>

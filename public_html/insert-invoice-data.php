@@ -4,50 +4,11 @@ include './config/helper.php';
 
 
 $obj = new helper();
-//print_r($obj->getInvoiceDetails('1615999283821'));
-//die;
-//echo"<pre>";
-//print_r($_POST);
-//print_r(urldecode($_POST['product_detail']));
-//die();
-//(
-//    [item] => Array
-//        (
-//            [1] => Array
-//                (
-//                    [name] => aaa
-//                    [quantity] => 1
-//                    [unit-price] => 2
-//                    [tax] => 1
-//                )
-//
-//            [2] => Array
-//                (
-//                    [name] => 
-//                    [quantity] => 
-//                    [unit-price] => 
-//                    [tax] => 0
-//                )
-//
-//        )
-//
-//    [discount_given] => 0
-//    [selected_discount_opt] => PERCENTAGE
-//    [total_without_tax] => 2.02
-//    [total_with_tax] => 2.02
-//    [grand_total] => 2.02
-//    [invoice_to] => 
-//    [invoice_no] => 1615993718422
-//)
-//
-//backend validation
+
 $errors = [];
 if (empty($_POST['invoice_no'])) {
     $errors[] = 'Invoice number is empty.';
 }
-//if (empty($_POST['discount_given'])) {
-//    $errors[] = 'Discount given is empty.';
-//}
 if (empty($_POST['selected_discount_opt'])) {
     $errors[] = 'selected_discount_opt is empty.';
 }
@@ -77,9 +38,6 @@ foreach ($_POST['item'] as $item) {
     if (empty($item['unit-price'])) {
         $errors[] = 'unit-price is empty.';
     }
-//        if (empty($item['invoice_no'])) {
-//        $errors[] = 'invoice_no is empty.';
-//    }
 }
 
 $response = '';
@@ -111,14 +69,11 @@ if (empty($errors)) {
             $sqlItem = "INSERT INTO `invoice_items`(`invoice_id`, `item_name`, `quantity`, `unit_price`, `tax`, `is_active`) "
                     . "VALUES $queryParam";
             if ($obj->mysqli->exec($sqlItem)) {
-//                echo "New record created successfully";
                 $response = ['status' => 'success', 'message' => 'Generated the invoice', 'invoice_id' => $invoiceId];
             }
         }
     }
 } else {
-    //echo"<pre>";
-    //print_r($errors);
     $response = ['status' => 'failed', 'message' => $errors];
 }
 

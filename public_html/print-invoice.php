@@ -12,9 +12,6 @@ if (!empty($_GET['invoice_id'])) {
         echo 'Sorry, invoice data is not found.';
         die;
     }
-//    echo"<pre>";
-//    print_r($invoiceData);
-//    die();
 } else {
     echo 'The invoice id is missing.';
     die;
@@ -30,14 +27,16 @@ if (!empty($_GET['invoice_id'])) {
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-
         <!-- Google Font -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
         <link rel="stylesheet" href="css/print-invoice.css">
     </head>
     <!--onload="window.print();"-->
     <body onload="window.print();">
+        <div class="create-new-contianer">
+            <a href="index.php"><button id="submitForm" class="btn btn-success">Generate new invoice</button></a>
+        </div>
+
         <div class="wrapper">
             <!-- Main content -->
             <section class="invoice">

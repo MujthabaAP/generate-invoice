@@ -6,8 +6,10 @@
 
 
 $(document).ready(function () {
+    //generate invoice number
     $('#invoice-number').text(Date.now());
 
+    //DataTable plugin configuration
     var table = $('#example').DataTable({
         "searching": false,
         "paging": false,
@@ -20,6 +22,7 @@ $(document).ready(function () {
     });
     var counter = 1;
 
+    //add row when clicking on the button
     $('#addRow').on('click', function () {
         table.row.add([
             '<input type="text" class="form-control" id="item-name_' + counter + '" name="item[' + counter + '][name]" data-row-index="' + counter + '">',
@@ -27,7 +30,6 @@ $(document).ready(function () {
             '<input type="text" class="form-control" id="item-unit-price_' + counter + '" name="item[' + counter + '][unit-price]" data-row-index="' + counter + '">',
             '<select size="1" class="custom-select-option" id="item-tax_' + counter + '" name="item[' + counter + '][tax]" data-row-index="' + counter + '"><option value="0" selected="selected">0%</option><option value="1">1%</option><option value="5">5%</option><option value="10">10%</option></select>',
             '<label id="line-total_' + counter + '" class="line-total">0</label>',
-            //'<label id="line-sub-total-without-tax_' + counter + '">0</label>',
             '<label id="line-sub-total-with-tax_' + counter + '" class="line-total-with-tax">0</label>',
             '<i class="fa fa-trash-o remove-a-row" aria-hidden="true"></i>'
         ]).draw(false);
@@ -44,21 +46,20 @@ $(document).ready(function () {
         });
     });
 
-// Automatically add a first row of data
+    //Automatically add a first row of data
     $('#addRow').click();
 
-//to remove selected row
+    //to remove selected row
     $('#example tbody').on('click', 'i.remove-a-row', function () {
         table.row($(this).parents('tr')).remove().draw();
 
-        //update total
+        //To update total
         calcAndUpdateTotal();
     });
 
-//to submit
+    //to submit the invoice and generate the invoice document
     $('#submitForm').click(function () {
         var formdata = table.$('input, select').serializeArray();
-        //console.log(formdata);
 
         var discountGiven = parseFloat($('#discount-input').val());
         var sumWithoutTax = parseFloat($('#line-sub-total-with-tax').text());
@@ -69,9 +70,6 @@ $(document).ready(function () {
         var invoiceTo = $('.custom-text-area').val();
         var invoiceNo = $('#invoice-number').text();
 
-        console.log('invoiceTo', invoiceTo);
-        console.log('discountGiven', discountGiven);
-
         formdata.push({name: 'discount_given', value: discountGiven},
                 {name: 'selected_discount_opt', value: DiscountOptVal},
                 {name: 'total_without_tax', value: sumWithoutTax},
@@ -80,9 +78,10 @@ $(document).ready(function () {
                 {name: 'invoice_to', value: invoiceTo},
                 {name: 'invoice_no', value: invoiceNo});
 
+        //insert the invoice data to db
         $.ajax({
             type: "POST",
-            url: 'test.php',
+            url: 'insert-invoice-data.php',
             data: formdata,
             success: function (data)
             {
@@ -92,36 +91,25 @@ $(document).ready(function () {
                 } else {
                     //redirect
                     window.location.href = "print-invoice.php?invoice_id=" + result.invoice_id;
-                    alert(result.status);
+                    //alert(result.status);
                 }
-//                console.log(data);
-//                alert(result.status);
             }
         });
     });
 
     function computeDynamicValues(obj) {
-        //alert("The text has been changed.");
-        //console.log('value :', $(obj).val());
-
-//        console.log('index :', $(obj).attr("data-row-index"));
         var lineTotal = 0;
         var subTotalWithoutTax = 0;
         var subTotalWitTax = 0;
         var rowIndex = $(obj).attr("data-row-index");
         var itemQuantity = $('#item-quantity_' + rowIndex).val();
-        //console.log('itemQuantity', itemQuantity);
         var itemUnitPrice = $('#item-unit-price_' + rowIndex).val();
-//        console.log('itemUnitPrice', itemUnitPrice);
-//            var itemTax = $('#item-tax_' + rowIndex).val();
         var itemTaxOpt = $('#item-tax_' + rowIndex).find('option:selected');
         var itemTax = itemTaxOpt.val();
-//        console.log('itemTax', itemTax);
 
         if (typeof itemQuantity !== 'undefined' && typeof itemUnitPrice !== 'undefined') {
             lineTotal = itemQuantity * itemUnitPrice;
             subTotalWithoutTax = itemQuantity * itemUnitPrice;
-//                subTotalWitTax
             if (itemTax != 0) {
                 subTotalWitTax = lineTotal + ((lineTotal * itemTax) / 100);
             } else {
@@ -129,11 +117,9 @@ $(document).ready(function () {
             }
 
             $("#line-total_" + rowIndex).text(lineTotal);
-            //$("#line-sub-total-without-tax_" + rowIndex).text(subTotalWithoutTax);
             $("#line-sub-total-with-tax_" + rowIndex).text(subTotalWitTax);
 
             calcAndUpdateTotal();
-
             computeNetTotal();
         }
     }
@@ -168,14 +154,15 @@ $(document).ready(function () {
         computeNetTotal();
     });
 
+    /*
+     * To computr net total dynamic values
+     */
     function computeNetTotal() {
         var discountGiven = parseFloat($('#discount-input').val());
         var sumWithTax = parseFloat($('#line-sub-total-with-tax').text());
         var selectedDiscountOpt = $('#select-discount-opt').find('option:selected');
         var DiscountOptVal = selectedDiscountOpt.val();
         var netAmount = 0;
-//        console.log('itemTax', itemTax);
-//        alert(DiscountOptVal);
         if (DiscountOptVal === 'AMOUNT') { //selected AMOUNT
             netAmount = sumWithTax - discountGiven;
         } else { //selected PERCENTAGE
@@ -185,6 +172,3 @@ $(document).ready(function () {
     }
 }
 );
-
-
-//

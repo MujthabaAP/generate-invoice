@@ -11,6 +11,10 @@ body{
     font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
     font-weight: 400;
 }
+.create-new-contianer{
+    text-align: center;
+    padding: 20px;
+}
 .page-header {
     margin: 10px 0 20px 0;
     font-size: 22px;
@@ -68,4 +72,8 @@ body{
     .lead {
         font-size: 21px;
     }
+}
+@media print { 
+    /* All your print styles go here */
+    .create-new-contianer { display: none !important; } 
 }
